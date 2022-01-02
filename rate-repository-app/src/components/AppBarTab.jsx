@@ -16,12 +16,12 @@ const styles = StyleSheet.create( {
 
 const AppBarTab = () => (
     <View style={styles.flexContainer}>
-      <PressableText text={ 'Repositories' } style={ {
+      <PressableText text={ 'Repositories' } link={'/'} style={ {
         color: theme.colors.white,
         padding: 20,
         fontSize: 20,
       } }/>
-      <PressableText text={ 'Hello' } style={ {
+      <PressableText text={ 'Sign in' } link={'/signin'} style={ {
         color: theme.colors.white,
         padding: 20,
         fontSize: 20,

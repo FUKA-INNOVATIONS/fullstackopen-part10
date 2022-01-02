@@ -1,12 +1,11 @@
 import React from 'react';
 import { Text, Pressable, Alert } from 'react-native';
+import { Link } from 'react-router-native';
 
-const PressableText = props => {
+const PressableText = ( { text, link, style } ) => {
   return (
-      <Pressable
-          onPress={() => Alert.alert(`You pressed ${props.text}!`)}
-      >
-        <Text style={{...props.style}}>{props.text}</Text>
+      <Pressable onPress={ () => Alert.alert( `You pressed ${ text }!` ) }>
+        <Link to={ link }><Text style={ { ...style } }>{ text }</Text></Link>
       </Pressable>
   );
 };
