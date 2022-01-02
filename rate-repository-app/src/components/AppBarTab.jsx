@@ -1,31 +1,24 @@
-import theme from '../theme';
-import PressableText from './PressableText';
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 
-const styles = StyleSheet.create( {
-  flexContainer: {
-    display:'flex',
-    flexDirection: 'row'
+import PressableText from './PressableText';
+import theme from '../theme';
 
+
+const styles = StyleSheet.create( {
+  pressableText: {
+    color: theme.colors.white,
+    padding: 15,
+    fontSize: 15,
   },
-  flexChild: {
-    //flexGrow: 0
-  }
 } );
 
-const AppBarTab = () => (
-    <View style={styles.flexContainer}>
-      <PressableText text={ 'Repositories' } link={'/'} style={ {
-        color: theme.colors.white,
-        padding: 20,
-        fontSize: 20,
-      } }/>
-      <PressableText text={ 'Sign in' } link={'/signin'} style={ {
-        color: theme.colors.white,
-        padding: 20,
-        fontSize: 20,
-      } }/>
+const AppBarTab = ( { text, link } ) => (
+    <View>
+      <PressableText
+          text={ text }
+          link={ link }
+          style={ { ...styles.pressableText } }/>
     </View>
 );
 
