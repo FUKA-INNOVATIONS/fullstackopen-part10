@@ -1,12 +1,7 @@
 import React from 'react';
 import { FlatList, View, StyleSheet } from 'react-native';
 import RepositoryItem from './RepositoryItem';
-
-const styles = StyleSheet.create( {
-  separator: {
-    height: 10,
-  },
-} );
+import theme from '../theme';
 
 const repositories = [
   {
@@ -53,6 +48,28 @@ const repositories = [
     reviewCount: 0,
     ownerAvatarUrl: 'https://avatars3.githubusercontent.com/u/13142323?v=4',
   },
+  {
+    id: 'hello',
+    fullName: 'reduxjs/redux',
+    description: 'Predictable state container for JavaScript apps',
+    language: 'TypeScript',
+    forksCount: 13902,
+    stargazersCount: 52869,
+    ratingAverage: 0,
+    reviewCount: 0,
+    ownerAvatarUrl: 'https://avatars3.githubusercontent.com/u/13142323?v=4',
+  },
+  {
+    id: 'hei',
+    fullName: 'reduxjs/redux',
+    description: 'Predictable state container for JavaScript apps',
+    language: 'TypeScript',
+    forksCount: 13902,
+    stargazersCount: 52869,
+    ratingAverage: 0,
+    reviewCount: 0,
+    ownerAvatarUrl: 'https://avatars3.githubusercontent.com/u/13142323?v=4',
+  },
 ];
 
 const ItemSeparator = () => <View style={ styles.separator }/>;
@@ -64,11 +81,28 @@ const RepositoryList = () => {
           ItemSeparatorComponent={ ItemSeparator }
           keyExtractor={ item => item.id }
           renderItem={ ( { item } ) => (
-              <RepositoryItem {...item}
-              />
-          )}
+              <RepositoryItem { ...item } />
+          ) }
       />
   );
 };
+
+const styles = StyleSheet.create( {
+  flexContainer: {
+    width: 500,
+    flexDirection: 'row',
+    padding: 5,
+    borderBottomWidth: 1,
+    borderColor: theme.colors.primary,
+    justifyContent: 'center',
+  },
+  flexItem: {
+    width: 250,
+    flexGrow: 0,
+  },
+  separator: {
+    height: 10,
+  },
+} );
 
 export default RepositoryList;

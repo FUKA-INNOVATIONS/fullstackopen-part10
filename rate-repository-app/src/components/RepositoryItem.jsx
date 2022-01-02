@@ -1,19 +1,113 @@
 import React from 'react';
-import { Text, View } from 'react-native-web';
+import { View, Image, StyleSheet, Text as NativeText } from 'react-native';
+import Text from './Text';
+import theme from '../theme';
 
-const RepositoryItem = ({
-  fullName, description, language, forksCount, stargazersCount, ratingAverage, reviewCount }) => {
+const styles = StyleSheet.create( {
+  body: {
+    backgroundColor: theme.colors.white
+  },
+  headerContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    padding: 15,
+  },
+  avatar: {
+    flexGrow: 0,
+    width: 45, height: 45,
+    borderRadius: 5
+  },
+  information: {
+    flexGrow: 1,
+    padding: 3,
+    marginLeft: 10,
+    //marginTop: 10
+
+  },
+  description: {
+    marginTop: 10
+  },
+  language: {
+    backgroundColor: theme.colors.primary,
+    alignSelf: 'flex-start',
+    padding: 10,
+    borderRadius: 5,
+    color: 'white',
+    textAlign: 'center',
+    overflow: 'hidden',
+    marginTop: 10,
+
+  },
+  footerContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginHorizontal: 30,
+    marginBottom: 10
+  },
+  footerItem: {
+    display: 'flex',
+    alignItems: 'center'
+  }
+} );
+
+// digits formatter thousands to K
+function kFormatter(num) {
+  return Math.abs(num) > 999 ? Math.sign(num)*((Math.abs(num)/1000).toFixed(1)) + 'k' : Math.sign(num)*Math.abs(num)
+}
+
+const RepositoryItem = ( {
+  id,
+  fullName,
+  description,
+  language,
+  forksCount,
+  stargazersCount,
+  ratingAverage,
+  reviewCount,
+  ownerAvatarUrl,
+} ) => {
   return (
-      <View>
-        <Text>Fullname: { fullName }</Text>
-        <Text>Description: { description }</Text>
-        <Text>Language: { language }</Text>
-        <Text>Stars: { stargazersCount }</Text>
-        <Text>Forks: { forksCount }</Text>
-        <Text>Reviews: { reviewCount }</Text>
-        <Text>Rating: { ratingAverage }</Text>
+      <View style={styles.body}>
+        <View style={ styles.headerContainer }>
+          <Image source={ { uri: ownerAvatarUrl } } style={ styles.avatar }/>
+          <View style={styles.information}>
+            <Text color={ 'primary' } fontWeight={ 'bold' }>{ fullName }</Text>
+            <Text style={styles.description}>{ description }</Text>
+            <NativeText style={styles.language}>{ language }</NativeText>
+          </View>
+        </View>
+
+        <View style={styles.footerContainer}>
+          <View style={styles.footerItem}>
+            <Text fontWeight={'bold'} >{kFormatter(stargazersCount)}</Text>
+            <View><Text>Stars</Text></View>
+          </View>
+          <View style={styles.footerItem}>
+            <Text fontWeight={'bold'}>{kFormatter(forksCount)}</Text>
+            <View><Text>Forks</Text></View>
+          </View>
+          <View style={styles.footerItem}>
+            <Text fontWeight={'bold'}>{kFormatter(reviewCount)}</Text>
+            <View><Text>Reviews</Text></View>
+          </View>
+          <View style={styles.footerItem}>
+            <Text fontWeight={'bold'}>{kFormatter(ratingAverage)}</Text>
+            <View><Text>Rating</Text></View>
+          </View>
+
+        </View>
       </View>
+
   );
 };
 
 export default RepositoryItem;
+
+/*
+ * <View>
+ <Text>Stars: { stargazersCount }</Text>
+ <Text>Forks: { forksCount }</Text>
+ <Text>Reviews: { reviewCount }</Text>
+ <Text>Rating: { ratingAverage }</Text>
+ </View>
+ * */
