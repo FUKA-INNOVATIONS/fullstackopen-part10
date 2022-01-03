@@ -32,7 +32,7 @@ const validationSchema = yup.object().shape( {
 } );
 
 const submitHandler = ( values ) => {
-  console.log( values );
+  console.log('Sign-in values', values );
 };
 
 const SignInForm = ( { onSubmit } ) => {
