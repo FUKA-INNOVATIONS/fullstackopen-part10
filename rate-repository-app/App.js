@@ -7,7 +7,7 @@ import Main from './src/components/Main';
 import createApolloClient from './src/utils/apolloClient';
 const apolloClient = createApolloClient();
 
-/*
+/*  !!! IMPORTANT !!!
 * Apollo client version 3.5+ has issues with metro bundler
 * Works fine with 3.4.17
 * */
