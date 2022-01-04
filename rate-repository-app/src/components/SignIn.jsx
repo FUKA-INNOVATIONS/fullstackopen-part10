@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, StyleSheet, View } from 'react-native';
+import { useHistory } from 'react-router-native';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 
@@ -35,7 +36,6 @@ const validationSchema = yup.object().shape( {
 const submitHandler = ( values ) => {
   console.log( 'Sign-in values', values );
 
-
 };
 
 const SignInForm = ( { onSubmit } ) => {
@@ -51,26 +51,35 @@ const SignInForm = ( { onSubmit } ) => {
 };
 
 const SignIn = () => {
-  const [signIn, result] = useSignIn();
-  const [token, setToken] = useState(null);
-  const [user, setUser] = useState(null);
+  //Result contains accessToken and expiresAt
+  const [ signIn, result ] = useSignIn();
+  const [ token, setToken ] = useState( null );
+  const history = useHistory();
 
-  const onSubmit = async (values) => {
+  const onSubmit = async ( values ) => {
     const { userName, password } = values;
-    console.log('u: ', userName);
-    console.log('p: ', password);
-    console.log('v: ', values);
-
     try {
-       await signIn(userName, password);
-       await setToken(result.data.authorize);
-     } catch (e) {
-       console.log(e);
-     }
+      await signIn( userName, password );
+      // setToken issue here
+      // result.data.authorize is retrieved too late, causes error
+      // login need twice calling onSbmit, this is fixed with useEffect
+    } catch ( e ) {
+      console.log( 'error in SignIn: ', e );
+    }
   };
 
-  console.log('r: ', result.data);
-  console.log('token: ', token);
+  useEffect( () => {
+    if ( result.loading === false && result.called && result.data !==
+        'undefined' ) {
+      const { accessToken } = result.data.authorize;
+      setToken( accessToken );
+    }
+  }, [ result ] );
+
+  useEffect( () => {
+      if (token ) history.push( '/' );
+  }, [ token ] );
+
 
   return (
       <View style={ styles.container }>
