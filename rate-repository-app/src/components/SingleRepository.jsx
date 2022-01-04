@@ -1,26 +1,49 @@
 import React, { useState } from 'react';
-import { View, Image, StyleSheet, Text as NativeText } from 'react-native';
+import {
+  View,
+  Image,
+  StyleSheet,
+  Text as NativeText,
+  Button,
+} from 'react-native';
 import Text from './Text';
 import theme from '../theme';
+import { useQuery } from '@apollo/client';
+import { GET_REPOSITORY } from '../graphql/queries';
+import { useParams } from 'react-router-native';
+import {openURL} from 'expo-linking'
 
-// digits formatter thousands to K
-function kFormatter( num ) {
-  return Math.abs( num ) > 999 ? Math.sign( num ) *
-      ( ( Math.abs( num ) / 1000 ).toFixed( 1 ) ) + 'k' : Math.sign( num ) *
-      Math.abs( num );
-}
+const SingleRepository = () => {
+  const { id } = useParams();
+  const [ repo, setRepo ] = useState( null );
+  const { loading, error, data } = useQuery( GET_REPOSITORY,
+      { variables: { repositoryId: id } },
+  );
 
-const RepositoryItem = ( {
-  id,
-  fullName,
-  description,
-  language,
-  forksCount,
-  stargazersCount,
-  ratingAverage,
-  reviewCount,
-  ownerAvatarUrl,
-} ) => {
+  if ( loading ) {
+    return (
+        <View>
+          <Text>Loading...</Text>
+        </View>
+    )
+  }
+
+  // Destruct data from response object
+    const {
+      fullName,
+      description,
+      language,
+      forksCount,
+      stargazersCount,
+      ratingAverage,
+      reviewCount,
+      ownerAvatarUrl,
+      url,
+    } = data.repository;
+
+  const handleLink = async () => {
+    await openURL(url);
+  }
 
   return (
       <View style={ styles.body }>
@@ -50,14 +73,24 @@ const RepositoryItem = ( {
             <Text fontWeight={ 'bold' }>{ kFormatter( ratingAverage ) }</Text>
             <View><Text>Rating</Text></View>
           </View>
-
+        </View>
+        <View style={styles.button}>
+          <Button onPress={handleLink} title={'Open in Github'} />
         </View>
       </View>
 
   );
 };
 
-export default RepositoryItem;
+// digits formatter thousands to K
+function kFormatter( num ) {
+  return Math.abs( num ) > 999 ? Math.sign( num ) *
+      ( ( Math.abs( num ) / 1000 ).toFixed( 1 ) ) + 'k' : Math.sign( num ) *
+      Math.abs( num );
+}
+
+export default SingleRepository;
+
 
 const styles = StyleSheet.create( {
   body: {
@@ -104,4 +137,9 @@ const styles = StyleSheet.create( {
     display: 'flex',
     alignItems: 'center',
   },
+  button: {
+    padding: 15,
+    fontFamily: theme.fonts.main,
+  }
+
 } );
