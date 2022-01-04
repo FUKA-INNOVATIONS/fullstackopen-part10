@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button, StyleSheet, View } from 'react-native';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 
 import Text from './Text';
 import FormikTextInput from './FormikTextInput';
+import useSignIn from '../hooks/useSignIn';
 
 const styles = StyleSheet.create( {
   container: {
@@ -32,7 +33,9 @@ const validationSchema = yup.object().shape( {
 } );
 
 const submitHandler = ( values ) => {
-  console.log('Sign-in values', values );
+  console.log( 'Sign-in values', values );
+
+
 };
 
 const SignInForm = ( { onSubmit } ) => {
@@ -47,15 +50,38 @@ const SignInForm = ( { onSubmit } ) => {
   );
 };
 
-const SignIn = () => (
-    <View style={ styles.container }>
-      <Text color={ 'text-primary' } fontWeight={ 'bold' }
-            style={ { fontSize: 20 } }>Sign in</Text>
-      <Formik initialValues={ initialValues } onSubmit={ submitHandler }
-              validationSchema={ validationSchema }>
-        { ( { handleSubmit } ) => <SignInForm onSubmit={ handleSubmit }/> }
-      </Formik>
-    </View>
-);
+const SignIn = () => {
+  const [signIn, result] = useSignIn();
+  const [token, setToken] = useState(null);
+  const [user, setUser] = useState(null);
+
+  const onSubmit = async (values) => {
+    const { userName, password } = values;
+    console.log('u: ', userName);
+    console.log('p: ', password);
+    console.log('v: ', values);
+
+    try {
+       await signIn(userName, password);
+       await setToken(result.data.authorize);
+     } catch (e) {
+       console.log(e);
+     }
+  };
+
+  console.log('r: ', result.data);
+  console.log('token: ', token);
+
+  return (
+      <View style={ styles.container }>
+        <Text color={ 'text-primary' } fontWeight={ 'bold' }
+              style={ { fontSize: 20 } }>Sign in</Text>
+        <Formik initialValues={ initialValues } onSubmit={ onSubmit }
+                validationSchema={ validationSchema }>
+          { ( { handleSubmit } ) => <SignInForm onSubmit={ handleSubmit }/> }
+        </Formik>
+      </View>
+  );
+};
 
 export default SignIn;
