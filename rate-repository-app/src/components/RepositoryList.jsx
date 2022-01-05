@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
-import { FlatList, View, StyleSheet, Pressable } from 'react-native';
+import { FlatList, View, StyleSheet, Pressable, TextInput } from 'react-native';
 import SwitchSelector from 'react-native-switch-selector';
 
 import RepositoryItem from './RepositoryItem';
 import theme from '../theme';
 import useRepositories from '../hooks/useRepositories';
 import { useHistory } from 'react-router-native';
+import PressableText from './PressableText';
 
 const ItemSeparator = () => <View style={ styles.separator }/>;
 
 const RepositoryList = () => {
+  const [ searchKeyword, setSearchKeyword ] = useState();
   let [ filter, setFilter ] = useState(
       { num: 0, orderBy: 'CREATED_AT', orderDirection: 'DESC' } );
   const { repositories, loading, refetch } = useRepositories( filter );
@@ -22,6 +24,12 @@ const RepositoryList = () => {
   const filterHandler = ( value ) => {
     setFilter(value);
   };
+
+  const searchHandler = () => {
+    console.log('searchKeyword')
+    setFilter({searchKeyword: searchKeyword});
+    console.log('searchKeyword: ', filter)
+  }
 
   const FilterRepository = () => {
     const options = [
@@ -39,8 +47,22 @@ const RepositoryList = () => {
       },
     ];
 
+    // TODO: Fix textInput focus issue
     return (
         <View style={ styles.filterContainer }>
+          <View style={styles.searchContainer}>
+            <TextInput
+                value={searchKeyword}
+                onChangeText={value => setTimeout(() => setSearchKeyword(value), 3000)}
+                style={styles.searchInput}
+                placeholder={ 'Write a search keyword' }>
+            </TextInput>
+            <PressableText
+                pressHandler={searchHandler}
+                style={styles.searchBtn}
+                text={'Search'} >Search
+            </PressableText>
+          </View>
           <SwitchSelector
               textColor={theme.colors.textPrimary}
               buttonColor={theme.colors.primary}
@@ -86,6 +108,28 @@ const styles = StyleSheet.create( {
     color: 'red',
     padding: 10,
   },
+  searchContainer: {
+    flexDirection: 'row',
+    marginVertical: 20,
+    alignItems: 'center',
+
+  },
+  searchInput: {
+    borderColor: theme.colors.textPrimary,
+    borderWidth: 0.2,
+    borderRadius: 30,
+    flexGrow: 1,
+    maxWidth: 300,
+    marginRight: 10,
+    padding: 15,
+    color: theme.colors.primary,
+    fontSize: 15
+  },
+  searchBtn: {
+    marginTop: 10,
+    color: theme.colors.primary,
+    fontFamily: theme.fonts.main
+  }
 } );
 
 export default RepositoryList;

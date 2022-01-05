@@ -31,14 +31,15 @@ const AppBar = () => {
     if ( data && data !== 'undefined' && data.authorizedUser ) {
       setIsAuthorized(true);
     }
-  }, data);
+  }, [data]);
 
   console.log('authorized: ', isAuthorized);
 
   const logoutHandler = async () => {
     await authStorage.removeAccessToken();
     await apolloClient.resetStore();
-    await alert('Signed out and store reseted!');
+    setIsAuthorized(false)
+    //await alert('Signed out and store reseted!');
   }
   return (
       <View>
