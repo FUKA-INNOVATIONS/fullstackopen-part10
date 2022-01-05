@@ -1,7 +1,14 @@
 import React, { useState } from 'react';
-import { View, Image, StyleSheet, Text as NativeText } from 'react-native';
+import {
+  View,
+  Image,
+  StyleSheet,
+  Text as NativeText,
+  Button,
+} from 'react-native';
 import Text from './Text';
 import theme from '../theme';
+import { openURL } from 'expo-linking';
 
 // digits formatter thousands to K
 function kFormatter( num ) {
@@ -20,7 +27,14 @@ const RepositoryItem = ( {
   ratingAverage,
   reviewCount,
   ownerAvatarUrl,
+  url,
 } ) => {
+
+  // Handler for opening external link in browser
+  const handleLink = async () => {
+    await openURL( url );
+  };
+
 
   return (
       <View style={ styles.body }>
@@ -50,8 +64,12 @@ const RepositoryItem = ( {
             <Text fontWeight={ 'bold' }>{ kFormatter( ratingAverage ) }</Text>
             <View><Text>Rating</Text></View>
           </View>
-
         </View>
+        {url &&
+        <View style={ styles.button }>
+          <Button onPress={ handleLink } title={ 'Open in Github' }/>
+        </View>
+        }
       </View>
 
   );
@@ -103,5 +121,9 @@ const styles = StyleSheet.create( {
   footerItem: {
     display: 'flex',
     alignItems: 'center',
+  },
+  button: {
+    padding: 15,
+    fontFamily: theme.fonts.main,
   },
 } );
