@@ -53,22 +53,21 @@ const SignInForm = ( { onSubmit } ) => {
 const SignIn = () => {
   //Result contains accessToken and expiresAt
   const [ signIn, result ] = useSignIn();
-  const [ token, setToken ] = useState( null );
+  //const [ token, setToken ] = useState( null );
   const history = useHistory();
 
   const onSubmit = async ( values ) => {
     const { userName, password } = values;
     try {
       await signIn( userName, password );
-      // setToken issue here
-      // result.data.authorize is retrieved too late, causes error
-      // login need twice calling onSbmit, this is fixed with useEffect
+      history.push('/')
     } catch ( e ) {
       console.log( 'error in SignIn: ', e );
     }
   };
 
-  useEffect( () => {
+  // NO need to have token state here > worked to git this working for maybe 7 hours =D
+  /*useEffect( () => {
     if ( result.loading === false && result.called && result.data !==
         'undefined' ) {
       const { accessToken } = result.data.authorize;
@@ -78,7 +77,7 @@ const SignIn = () => {
 
   useEffect( () => {
       if (token ) history.push( '/' );
-  }, [ token ] );
+  }, [ token ] );*/
 
 
   return (

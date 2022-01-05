@@ -9,6 +9,7 @@ import AppBar from './AppBar';
 import SignIn from './SignIn';
 import SingleRepository from './SingleRepository';
 import RepositoryItem from './RepositoryItem';
+import CreateReview from './CreateReview';
 
 
 const styles = StyleSheet.create({
@@ -27,7 +28,10 @@ const Main = () => {
           <Route path="/" exact>
             <RepositoryList />
           </Route>
-          <Route path={'/signin'} exact>
+          <Route path={'/create-review'} exact>
+            <CreateReview />
+          </Route>
+          <Route path={'/sign-in'} exact>
             <SignIn />
           </Route>
           <Route path={'/:id'} exact>

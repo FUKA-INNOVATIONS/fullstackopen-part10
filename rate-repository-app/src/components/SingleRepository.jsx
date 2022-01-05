@@ -60,7 +60,9 @@ const SingleRepository = () => {
     error: errorRepository,
     data: dataRepository,
   } = useQuery( GET_REPOSITORY,
-      { variables: { repositoryId: id } },
+      { variables: { repositoryId: id },
+      fetchPolicy: 'cache-and-network'
+      },
   );
 
   const {
@@ -68,7 +70,9 @@ const SingleRepository = () => {
     loading: loadingReviews,
     data: dataReviews,
   } = useQuery( GET_REVIEWS,
-      { variables: { repositoryId: id } },
+      { variables: { repositoryId: id },
+      fetchPolicy: 'cache-and-network'
+      },
   );
 
   if ( loadingRepository || loadingReviews ) {
