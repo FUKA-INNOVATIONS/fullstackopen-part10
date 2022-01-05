@@ -95,6 +95,7 @@ const styles = StyleSheet.create( {
     flexGrow: 1,
     padding: 3,
     marginLeft: 10,
+    marginRight: 20
     //marginTop: 10
 
   },
