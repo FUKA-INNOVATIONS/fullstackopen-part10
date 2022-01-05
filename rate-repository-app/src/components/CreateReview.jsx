@@ -72,10 +72,6 @@ const CreateReview = () => {
     }
   }
 
-
-  console.log('result.error: ', result.error);
-
-
   return (
       <View style={ styles.container }>
         <Text color={ 'text-primary' } fontWeight={ 'bold' }
