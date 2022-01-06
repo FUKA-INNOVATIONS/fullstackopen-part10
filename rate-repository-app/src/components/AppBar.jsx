@@ -5,7 +5,7 @@ import { useQuery, useApolloClient } from '@apollo/client';
 
 import theme from '../theme';
 import AppBarTab from './AppBarTab';
-import { AUTHORIZED_USER } from '../graphql/mutations';
+import { AUTHORIZED_USER } from '../graphql/queries';
 import useAuthStorage from '../hooks/useAuthStorage';
 
 
@@ -48,6 +48,7 @@ const AppBar = () => {
           { !isAuthorized && <AppBarTab text={ 'Sign in' } link={ '/sign-in' }/>}
           { !isAuthorized && <AppBarTab text={ 'Sign up' } link={ '/sign-up' }/>}
           { isAuthorized && <AppBarTab text={ 'Create a review' } link={ '/create-review' }/>}
+          { isAuthorized && <AppBarTab text={ 'My reviews' } link={ '/user-reviews' }/>}
           { isAuthorized &&  <AppBarTab pressHandler={logoutHandler} text={ 'Sign out' } link={ '/' }/>}
         </ScrollView>
       </View>

@@ -1,28 +1,47 @@
 import { gql } from '@apollo/client';
 
-// Get reviews without pagination
-/*export const GET_REVIEWS = gql`
- query getReviews($repositoryId: ID!, ) {
- repository(id: $repositoryId) {
- id
- reviews {
- edges {
- node {
- id
- createdAt
- rating
- text
- user {
- id
- username
- reviewCount
- }
- }
- }
- }
- }
- }
- `;*/
+/*export const AUTHORIZED_USER = gql`
+    query {
+        authorizedUser {
+            id
+            username
+        }
+    }
+`;*/
+
+export const AUTHORIZED_USER = gql`
+    query getAuthorizedUser($includeReviews: Boolean = false) {
+        authorizedUser {
+            id
+            username
+            reviewCount
+            reviews @include(if: $includeReviews) {
+                edges {
+                    node {
+                        id
+                        text
+                        rating
+                        createdAt
+                        repositoryId
+                        user {
+                            id
+                            username
+                        }
+                    }
+                    cursor
+                }
+                pageInfo {
+                    startCursor
+                    endCursor
+                    hasNextPage
+                    hasPreviousPage
+                }
+            }
+        }
+    }
+`;
+
+
 
 // Get paginated reviews
 export const GET_REVIEWS = gql`
