@@ -1,5 +1,11 @@
 import { gql } from '@apollo/client';
 
+export const DELETE_REVIEW = gql`
+    mutation deleteReview( $reviewId: ID! ) {
+        deleteReview( id: $reviewId )
+    }
+`;
+
 export const AUTHORIZE = gql`
     mutation authorize($username: String!, $password: String!) {
         authorize(credentials: {username: $username, password: $password}) {

@@ -1,14 +1,5 @@
 import { gql } from '@apollo/client';
 
-/*export const AUTHORIZED_USER = gql`
-    query {
-        authorizedUser {
-            id
-            username
-        }
-    }
-`;*/
-
 export const AUTHORIZED_USER = gql`
     query getAuthorizedUser($includeReviews: Boolean = false) {
         authorizedUser {
